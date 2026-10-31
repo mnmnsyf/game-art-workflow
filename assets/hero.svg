@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="430" viewBox="0 0 960 430" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">
+  <rect width="960" height="430" rx="16" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="959" height="429" rx="16" fill="none" stroke="#d0d7de"/>
+
+  <text x="40" y="52" font-size="24" font-weight="700" fill="#1f2328">One sentence in. A reviewed, engine-ready asset out.</text>
+  <text x="40" y="80" font-size="15" fill="#59636e">The agent does the work. You approve at three gates. Nothing ships, spends, or touches your scene behind your back.</text>
+
+  <!-- flow -->
+  <g font-size="14">
+    <rect x="40" y="108" width="150" height="74" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+    <text x="115" y="138" text-anchor="middle" font-weight="600" fill="#1f2328">"Make village</text>
+    <text x="115" y="158" text-anchor="middle" font-weight="600" fill="#1f2328">houses for Godot"</text>
+
+    <rect x="220" y="108" width="150" height="74" rx="10" fill="#ddf4ff" stroke="#54aeff"/>
+    <text x="295" y="136" text-anchor="middle" font-weight="700" fill="#0969da">G1  Plan</text>
+    <text x="295" y="158" text-anchor="middle" fill="#1f2328">form · cost · scope</text>
+
+    <rect x="400" y="108" width="150" height="74" rx="10" fill="#ddf4ff" stroke="#54aeff"/>
+    <text x="475" y="136" text-anchor="middle" font-weight="700" fill="#0969da">G2  Asset</text>
+    <text x="475" y="158" text-anchor="middle" fill="#1f2328">concept · model · alpha</text>
+
+    <rect x="580" y="108" width="150" height="74" rx="10" fill="#ddf4ff" stroke="#54aeff"/>
+    <text x="655" y="136" text-anchor="middle" font-weight="700" fill="#0969da">G3  In-game</text>
+    <text x="655" y="158" text-anchor="middle" fill="#1f2328">real camera · collision</text>
+
+    <rect x="760" y="108" width="160" height="74" rx="10" fill="#dafbe1" stroke="#4ac26b"/>
+    <text x="840" y="136" text-anchor="middle" font-weight="700" fill="#1a7f37">Shipped</text>
+    <text x="840" y="158" text-anchor="middle" fill="#1f2328">Godot · Unity · UE5</text>
+
+    <g stroke="#8c959f" stroke-width="2" fill="none">
+      <path d="M190 145 H214"/><path d="M370 145 H394"/><path d="M550 145 H574"/><path d="M730 145 H754"/>
+    </g>
+    <g fill="#8c959f">
+      <path d="M214 140 L220 145 L214 150 Z"/><path d="M394 140 L400 145 L394 150 Z"/>
+      <path d="M574 140 L580 145 L574 150 Z"/><path d="M754 140 L760 145 L754 150 Z"/>
+    </g>
+    <text x="475" y="204" text-anchor="middle" font-size="13" fill="#9a6700">⏸ every gate waits for your reply, even in autonomous mode</text>
+  </g>
+
+  <!-- results -->
+  <line x1="40" y1="226" x2="920" y2="226" stroke="#d0d7de"/>
+  <text x="40" y="256" font-size="16" font-weight="700" fill="#1f2328">Measured on agent behavior evals</text>
+  <text x="920" y="256" text-anchor="end" font-size="12" fill="#59636e">same model, same prompts · previous skill version vs this one</text>
+
+  <g font-size="14">
+    <text x="40" y="294" fill="#1f2328">12 real-world scenarios</text>
+    <rect x="270" y="280" width="560" height="18" rx="4" fill="#f6f8fa"/>
+    <rect x="270" y="280" width="465" height="18" rx="4" fill="#afb8c1"/>
+    <text x="842" y="294" fill="#59636e">83%</text>
+    <rect x="270" y="304" width="560" height="18" rx="4" fill="#f6f8fa"/>
+    <rect x="270" y="304" width="549" height="18" rx="4" fill="#0969da"/>
+    <text x="842" y="318" font-weight="700" fill="#0969da">98%</text>
+
+    <text x="40" y="362" fill="#1f2328">"Run autonomously, don't ask"</text>
+    <rect x="270" y="348" width="560" height="18" rx="4" fill="#f6f8fa"/>
+    <rect x="270" y="348" width="140" height="18" rx="4" fill="#afb8c1"/>
+    <text x="842" y="362" fill="#59636e">25%</text>
+    <rect x="270" y="372" width="560" height="18" rx="4" fill="#f6f8fa"/>
+    <rect x="270" y="372" width="560" height="18" rx="4" fill="#0969da"/>
+    <text x="842" y="386" font-weight="700" fill="#0969da">100%</text>
+  </g>
+  <g font-size="12">
+    <rect x="270" y="404" width="12" height="12" rx="2" fill="#afb8c1"/><text x="288" y="414" fill="#59636e">previous version</text>
+    <rect x="410" y="404" width="12" height="12" rx="2" fill="#0969da"/><text x="428" y="414" fill="#59636e">game-art-workflow</text>
+  </g>
+</svg>

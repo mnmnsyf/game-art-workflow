@@ -1,0 +1,36 @@
+{
+  "schema": "game-art-workflow/brief@1",
+  "asset_id": null,
+  "title": null,
+  "kind": "2d | 3d | texture | kit | mixed",
+  "request": "the user's own words",
+  "profile_version": null,
+  "spec": {
+    "player_use": null,
+    "visible_sides": [],
+    "traversal": "none | walk_around | door_opens | enterable",
+    "openings": [],
+    "detachable_parts": [],
+    "variants": [],
+    "expected_screen_size": null,
+    "target_scene": null,
+    "target_node_or_ref": null
+  },
+  "form": {
+    "recommended": null,
+    "alternatives": [],
+    "reason": null
+  },
+  "sample_strategy": null,
+  "authorization": {
+    "approved_channels": [],
+    "max_generations": null,
+    "budget": null,
+    "budget_unit": null,
+    "public_allowed": false,
+    "delegated_gates": [],
+    "delegation_quote": null
+  },
+  "acceptance": [],
+  "out_of_scope": []
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Art Asset Workflow"
+  short_description: "Produce 2D and 3D static game art with staged plan reviews, version recovery, and Godot / UE integration"
+  default_prompt: "Use $game-art-workflow to create static assets that follow this project's art conventions, stop for my review at each gate, and integrate them into the game."

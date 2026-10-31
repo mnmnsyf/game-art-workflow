@@ -1,0 +1,21 @@
+[
+  {"query": "Make me a set of medieval village house models and put them in my Godot scene", "should_trigger": true},
+  {"query": "this grass texture has a really obvious seam, can you fix it so it tiles seamlessly", "should_trigger": true},
+  {"query": "Split this interior concept art into furniture sprites I can place one by one", "should_trigger": true},
+  {"query": "Use Tripo to turn this approved concept into 3D and then import it into UE5", "should_trigger": true},
+  {"query": "pick up yesterday's house_a asset job, did the model finish downloading?", "should_trigger": true},
+  {"query": "I need a three-layer parallax background for a top-down game: far mountains, forest, near grass", "should_trigger": true},
+  {"query": "Build a modular dungeon wall kit that snaps to a 2 m grid", "should_trigger": true},
+  {"query": "After importing this GLB into Godot the metallic is gone and it doesn't match the original model", "should_trigger": true},
+  {"query": "Make a set of low-poly trees and rocks for my Godot forest level", "should_trigger": true},
+  {"query": "I need tileable stone floor textures with normal maps for Unreal", "should_trigger": true},
+  {"query": "my imported house prefab in Unity URP looks way too shiny compared to the original GLB, fix the materials", "should_trigger": true},
+  {"query": "Make a run and jump skeletal animation set for my main character", "should_trigger": false},
+  {"query": "Design the main menu UI and health bar for my game", "should_trigger": false},
+  {"query": "Make a fire explosion particle effect", "should_trigger": false},
+  {"query": "Write me an inventory system with drag-and-drop items", "should_trigger": false},
+  {"query": "Paint a watercolor illustration of my cat for an avatar", "should_trigger": false},
+  {"query": "How do I tune the jump feel of CharacterBody3D in Godot?", "should_trigger": false},
+  {"query": "Draft a contract for outsourcing game art", "should_trigger": false},
+  {"query": "Rig this character model and add a walk cycle in Blender", "should_trigger": false}
+]

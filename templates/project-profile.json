@@ -1,0 +1,80 @@
+{
+  "schema": "game-art-workflow/project-profile@1",
+  "version": 1,
+  "updated": null,
+  "basis": "Which files were read / which user reply, and the date",
+  "engine": {
+    "name": null,
+    "version": null,
+    "renderer": null,
+    "platforms": [],
+    "camera": {
+      "type": null,
+      "angle_deg": null,
+      "fov_deg": null,
+      "resolution": null
+    },
+    "display": null,
+    "verified": []
+  },
+  "scale": {
+    "character_height_m": null,
+    "units": null,
+    "up_axis": null,
+    "origin_rule": "ground center",
+    "pixels_per_meter": null,
+    "tile_size_px": null,
+    "module_grid_m": null
+  },
+  "style": {
+    "summary": null,
+    "approved_references": [],
+    "palette": [],
+    "detail_density": null,
+    "outline": null,
+    "lighting": null,
+    "avoid": [],
+    "packs": []
+  },
+  "budgets": {
+    "near": {
+      "tris": null,
+      "texture_px": null,
+      "materials": null
+    },
+    "mid": {
+      "tris": null,
+      "texture_px": null,
+      "materials": null
+    },
+    "far": {
+      "tris": null,
+      "texture_px": null,
+      "materials": null
+    },
+    "lod": null,
+    "memory_mb": null
+  },
+  "tools": {
+    "channels": [],
+    "wrappers": [],
+    "authorization": {
+      "default_requires_confirmation": true,
+      "standing_budget": null,
+      "public_upload_allowed": false
+    },
+    "restrictions": []
+  },
+  "conventions": {
+    "asset_dir": null,
+    "naming": null,
+    "jobs_dir": ".art-workflow/jobs",
+    "rollback": "replace designated references and record originals; never reset/clean",
+    "validation_commands": []
+  },
+  "licensing": {
+    "commercial_use_required": null,
+    "sources": []
+  },
+  "open_questions": []
+}
