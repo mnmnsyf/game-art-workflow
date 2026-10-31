@@ -126,6 +126,45 @@ def test_images(d: Path) -> None:
     check("contact sheet: anchor and numbering", r.returncode == 0 and [i["tag"] for i in m["items"]] == ["ANCHOR", "#1", "#2"], r.stderr[-200:])
 
 
+def test_keying_and_slicing(d: Path) -> None:
+    from PIL import Image, ImageDraw
+    sheet = Image.new("RGB", (256, 256), (255, 0, 255))
+    dr = ImageDraw.Draw(sheet)
+    dr.ellipse([30, 40, 98, 118], fill=(150, 90, 40))      # cell 0,0: small, safe
+    dr.rectangle([150, 20, 230, 120], fill=(60, 110, 60))  # cell 0,1: larger, safe
+    dr.rectangle([20, 150, 127, 230], fill=(90, 90, 160))  # cell 1,0: touches right cell edge
+    dr.polygon([(170, 240), (192, 150), (214, 240)], fill=(200, 180, 60))  # cell 1,1
+    sheet.save(d / "pack_raw.png")
+
+    r = run("chroma_key.py", str(d / "pack_raw.png"), "-o", str(d / "out" / "pack_keyed.png"), "--json")
+    m = json.loads(r.stdout)
+    keyed = Image.open(m["output"])
+    check("chroma: keys solid magenta to real alpha", r.returncode == 0 and m["bg"] == "#FF00FF"
+          and keyed.mode == "RGBA" and keyed.getpixel((5, 5))[3] == 0 and keyed.getpixel((64, 80))[3] == 255,
+          json.dumps(m))
+
+    r = run("grid_slice.py", m["output"], "--grid", "2x2", "-o", str(d / "out" / "pack"),
+            "--names", "barrel,bush,crate,cone", "--json")
+    s = json.loads(r.stdout)
+    flags = {c["name"]: c["flags"] for c in s["cells"]}
+    sizes = {Image.open(c["file"]).size for c in s["cells"]}
+    check("slice: flags content touching the cell edge", r.returncode == 1 and flags["crate"] == ["touches_cell_edge"]
+          and not flags["barrel"] and not flags["bush"], json.dumps(flags))
+    check("slice: equal canvas and shared scale", len(sizes) == 1 and (d / "out" / "pack" / "slices.json").exists(), str(sizes))
+    bush = Image.open(d / "out" / "pack" / "bush.png")
+    check("slice: feet alignment sits on the bottom padding", bush.getchannel("A").getbbox()[3] == bush.height - 8,
+          str(bush.getchannel("A").getbbox()))
+
+    r = run("alpha_check.py", str(d / "sprite.png"), "--expect-size", "64x64", "--json")
+    m = json.loads(r.stdout)
+    check("alpha: expect-size is enforced", r.returncode == 1 and any("expected 64x64" in i for i in m["issues"]),
+          str(m["issues"]))
+    r = run("alpha_check.py", str(d / "halo.png"), "--max-colors", "1", "--json")
+    m = json.loads(r.stdout)
+    check("alpha: palette budget is enforced", r.returncode == 1 and m.get("visible_colors", 0) >= 2
+          and any("palette budget" in i for i in m["issues"]), str(m.get("visible_colors")))
+
+
 def test_artjob(d: Path) -> None:
     root = d / "proj"
     (root / "art").mkdir(parents=True)
@@ -185,6 +224,7 @@ def main() -> int:
         (d / "out").mkdir()
         make_images(d)
         test_images(d)
+        test_keying_and_slicing(d)
         test_artjob(d)
     failed = [r for r in results if not r[1]]
     for name, ok, detail in results:

@@ -46,7 +46,8 @@ Getting an AI to produce one pretty image is easy; turning it into a usable game
 | Running in "autonomous" mode, the agent sails past review points | Every gate is a hard stop: show, end the turn, wait — even when the runtime encourages autonomy |
 | The connection drops, the agent clicks generate again, credits are charged twice | Persist `submitting` before submitting; mark unclear results `needs_reconcile` and reconcile first |
 | "Optimization" that actually swapped the roof, re-unwrapped UVs, and dropped metallic-roughness | Strict **fidelity vs. alteration**; A0 raw → A1 faithful import → A2 optimize → A3 integrate |
-| A "removed" background that is really a checkerboard painted into RGB | `alpha_check.py` detects fake transparency, halos, and clipping |
+| A "removed" background that is really a checkerboard painted into RGB | Prompt a solid background, key it with `chroma_key.py`; `alpha_check.py` catches fake transparency, halos, and clipping |
+| A 3×3 prop pack where the gate is cut off and every prop is a different size | Only compact props share a pack; `grid_slice.py` applies one scale and anchor and flags cut-off cells |
 | "Tileable" textures that show seams and banding once repeated | `tile_preview.py` renders a 3×3 preview and quantifies seam ratio and gradient |
 | House #10 doesn't look like it belongs with house #1 | Style packs: anchors, prompt skeleton, palette, parameters, reviewed against anchors on a contact sheet |
 | A new session re-asks every parameter | `artjob.py resume` recovers from files, hashes, and the event log |
@@ -127,6 +128,15 @@ python scripts/compare_images.py source_basecolor.png imported_basecolor.png --o
 
 # Contact sheet: review batch candidates together, optionally with style anchors
 python scripts/contact_sheet.py batch/*.png --anchor style/anchor1.png --out review/sheet.png
+
+# Generated on a solid background? Key it out with soft edges and no colour fringe
+python scripts/chroma_key.py raw/barrel.png -o work/barrel.png
+
+# Prop pack / sprite sheet: slice into equally scaled, feet-aligned PNGs; flags cut-off objects
+python scripts/grid_slice.py work/props.png --grid 3x3 -o work/props/ --names "rock,crate,lamp,..."
+
+# 3D model review: render 7 views + real size and triangle count (run inside Blender)
+blender -b -P scripts/blender_views.py -- raw/house_a.glb --out review/house_a_views
 ```
 
 Self-test and structure check:
@@ -144,11 +154,12 @@ python scripts/check_skill.py
 ```text
 SKILL.md                 entry: hard rules, workflow, three gates, read-on-demand table
 references/              branch details (loaded on demand to save context)
-  intake.md  style.md  tools.md  review-state.md
+  intake.md  style.md  generation.md  provenance.md  tools.md  review-state.md
   2d.md  3d.md  godot.md  unity.md  unreal.md  validation.md
 examples/                full walkthroughs: 3D village → Godot, 2D tiling & cut-outs, field case study
-templates/               project profile, brief, G1 plan, review card
-scripts/                 artjob / tile_preview / alpha_check / compare_images / contact_sheet
+templates/               project profile, asset manifest, brief, G1 plan, review card
+scripts/                 artjob / tile_preview / alpha_check / compare_images / contact_sheet /
+                         chroma_key / grid_slice / blender_views
 demo/godot-village/      minimal Godot project to try the skill in a minute
 evals/                   behavior and trigger eval cases
 assets/                  README images

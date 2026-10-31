@@ -1,0 +1,43 @@
+{
+  "schema": "game-art-workflow/asset-manifest@1",
+  "project_profile": "art/workflow/project-profile.json",
+  "style_pack": null,
+  "assets": [
+    {
+      "id": "house_a",
+      "role": "walk-around village house, door opens, not enterable",
+      "kind": "3d",
+      "path": null,
+      "in_game_size": "6m wide x 5m tall",
+      "technical": {
+        "dimensions": null,
+        "alpha": null,
+        "anchor": "ground center",
+        "frames": 1,
+        "filtering": null,
+        "triangles": null,
+        "texture_px": null
+      },
+      "collision_role": "walls block, doorway open, step walkable",
+      "visual_locks": ["palette", "silhouette", "proportions", "facing", "light-direction"],
+      "source": {
+        "generated": null,
+        "tool_or_url": null,
+        "model_version": null,
+        "created_at": null,
+        "prompt_file": null,
+        "license": null,
+        "attribution": null,
+        "restrictions": []
+      },
+      "status": "planned",
+      "job": ".art-workflow/jobs/house_a",
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks": [],
+        "approved_gates": []
+      }
+    }
+  ]
+}

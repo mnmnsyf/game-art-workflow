@@ -21,6 +21,8 @@ First confirm the project root, engine version, and whether a job record already
 | --- | --- |
 | New project, new request, whole scene, batch planning | [Project profile & plan](references/intake.md) |
 | Style lock, batch consistency, reference management | [Style consistency](references/style.md) |
+| Writing prompts, backgrounds / transparency, sheets & kits, sizes | [Prompting & raw generation](references/generation.md) |
+| Licenses, attribution, AI disclosure, asset manifest | [Rights & provenance](references/provenance.md) |
 | Tool choice, missing image generation, cost & visibility | [Tools & vendors](references/tools.md) |
 | Review records, rework, resuming, replacement & rollback | [Review & state](references/review-state.md) |
 | 2D images, layering, cut-outs, transparency, tiling textures | [2D production](references/2d.md) |
@@ -31,7 +33,7 @@ First confirm the project root, engine version, and whether a job record already
 
 ## Workflow
 
-1. **Survey the project**: read project docs, existing assets, camera, character scale, and implementation. Reuse `art/workflow/project-profile.json` if present; otherwise create one from the [template](templates/project-profile.json). For an existing job, run `python scripts/artjob.py resume <asset-id>` first and continue from its output instead of re-asking settled parameters.
+1. **Survey the project**: read project docs, existing assets, camera, character scale, and implementation. Reuse `art/workflow/project-profile.json` if present; otherwise create one from the [template](templates/project-profile.json). For an existing job, run `python scripts/artjob.py resume <asset-id>` first and continue from its output instead of re-asking settled parameters. For a set of assets, keep a manifest from the [template](templates/asset-manifest.json) with each asset's role, **in-game size**, anchor, collision role, source, and license — without the in-game size, assets get scaled wrong.
 2. **Choose the form**: by player use, recommend a standalone image, layered background, tiling texture, 3D, procedural, or hybrid; for buildings first distinguish distant shell / walk-around / door opens / enterable. The user's explicit choice wins.
 3. **Probe tools**: confirm which image generation, 3D generation, DCC, and engine capabilities are actually callable. When something is missing, list the real options (API / local / web / user generates and imports / existing assets) with cost, privacy, and export limits, and let the user choose.
 4. **G1 plan review** → production → **G2 intermediate review** → integration → **G3 in-game review** (table below). Stop at each gate per hard rule 2.
@@ -62,6 +64,9 @@ All Python 3.9+. The ledger script uses only the standard library; image scripts
 | `scripts/tile_preview.py` | N×N tiling preview plus left/right and top/bottom seam metrics |
 | `scripts/alpha_check.py` | Real alpha, fake checkerboard painted into RGB, black/white/colored composites, edge margin |
 | `scripts/compare_images.py` | Decoded pixel comparison (max / mean error, diff map, side-by-side) to prove fidelity or show rework |
+| `scripts/chroma_key.py` | Remove a solid generation background with soft alpha and despill (never prompt for "transparent") |
+| `scripts/grid_slice.py` | Slice a sheet / prop pack into equally scaled, anchor-aligned PNGs; flags objects cut off at cell edges |
+| `scripts/blender_views.py` | Run inside Blender: render front/back/left/right/top/bottom/¾ views of a model plus size and triangle stats |
 
 ## Key distinctions
 

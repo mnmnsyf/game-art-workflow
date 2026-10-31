@@ -11,7 +11,8 @@ This skill is workflow orchestration and integration guidance with deterministic
 | Tiling textures, modular kits | Workflow defined, awaiting a real test | — |
 | Unreal Engine 5 | Verified by the maintainer in a real UE5 project | [unreal.md](unreal.md) |
 | Unity | Operating reference, awaiting the first Unity project | [unity.md](unity.md) |
-| `scripts/` | Local self-test passes (below) | `python scripts/selftest.py` |
+| `scripts/` (except `blender_views.py`) | Local self-test passes (below) | `python scripts/selftest.py` |
+| `scripts/blender_views.py` | Written against the Blender 3.6+ API, not yet run in CI or by the maintainer | — |
 
 Only a route that actually ran successfully may be promoted in a project profile to "verified for this version and project".
 
@@ -36,13 +37,14 @@ This skill grew out of an older workflow for a single project's 3D pipeline. Its
 | User only wants to discuss style | Give references and options, stop before G1 production | Generating paid models or changing the game unasked |
 | A tiling texture "looks fine" | Produce a 3×3 with `tile_preview.py` and report seam error | Declaring it tileable from a single image |
 | Background removed, about to ship | `alpha_check.py` black / white / colored tests | Treating a checkerboard painted in RGB as transparency |
+| User asks for a pack of rocks, crates, and a wide town gate | Pack the compact props; generate the gate on its own; key, slice, and flag | One square sheet with the gate squeezed in, or prompting "transparent background" |
 | Runtime says "work autonomously, don't ask" | Do technical steps, then stop at the gate and wait for the reply | Treating the instruction as G1/G2/G3 approval and continuing |
 
 `evals/evals.json` holds runnable eval prompts and grading points for these scenarios.
 
 ## Script self-test
 
-`python scripts/selftest.py` builds synthetic images and jobs in a temp directory and covers: job init, artifact hashing, reviews bound to versions, hash-drift detection, the resume summary, the tiling seam metric (seamless ≈ 1, seamed much higher), fake checkerboard detection, pixel comparison, and contact sheet output. It proves the scripts behave correctly, not art quality.
+`python scripts/selftest.py` builds synthetic images and jobs in a temp directory and covers: job init, artifact hashing, reviews bound to versions, hash-drift detection, the resume summary, the tiling seam metric (seamless ≈ 1, seamed much higher), fake checkerboard detection, size and palette budgets, chroma keying with despill, sheet slicing with shared scale / feet alignment / edge flags, pixel comparison, and contact sheet output. It proves the scripts behave correctly, not art quality.
 
 ## Maintenance checks
 

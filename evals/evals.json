@@ -160,6 +160,18 @@
         "Keeps .art-workflow outside Assets and does not delete or regenerate .meta files",
         "States the import is unverified here and stops at the appropriate gate instead of claiming integration"
       ]
+    },
+    {
+      "id": 15,
+      "name": "prop-pack-classification",
+      "prompt": "Generate a batch of props for my top-down village map in one image: rocks, crates, barrels, lanterns, and the big town gate.",
+      "setup": "Godot 4.x 2D project; an image generation tool is available; Pillow available.",
+      "expectations": [
+        "Keeps the compact props in one pack and plans the wide town gate as a separate generation",
+        "Prompts a solid flat background rather than a transparent one, and plans chroma_key.py then grid_slice.py",
+        "Plans one shared scale and a feet anchor for the props, with in-game sizes recorded in a manifest",
+        "Stops at G1 or G2 for review instead of integrating the props unreviewed"
+      ]
     }
   ]
 }

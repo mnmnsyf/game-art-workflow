@@ -122,6 +122,8 @@ def main(argv=None) -> int:
     p.add_argument("--out", help="output directory for composites")
     p.add_argument("--halo-light", type=int, default=225)
     p.add_argument("--halo-dark", type=int, default=30)
+    p.add_argument("--expect-size", help="required WxH, e.g. 64x64")
+    p.add_argument("--max-colors", type=int, help="max distinct visible colours (palette budget for pixel art)")
     p.add_argument("--json", action="store_true")
     a = p.parse_args(argv)
 
@@ -130,6 +132,16 @@ def main(argv=None) -> int:
         src = Path(path)
         img = open_image(src)
         r = analyze(img, a.halo_light, a.halo_dark)
+        if a.expect_size:
+            ew, eh = (int(v) for v in a.expect_size.lower().split("x"))
+            if tuple(img.size) != (ew, eh):
+                r["issues"].append(f"size {img.size[0]}x{img.size[1]} does not match the expected {ew}x{eh}")
+        if a.max_colors:
+            rgba = img.convert("RGBA")
+            visible = {c[:3] for c in rgba.getdata() if c[3] > 0}
+            r["visible_colors"] = len(visible)
+            if len(visible) > a.max_colors:
+                r["issues"].append(f"{len(visible)} distinct visible colours exceed the palette budget of {a.max_colors}")
         r["file"] = str(src.resolve())
         view = img.convert("RGBA")
         if max(view.size) > 512:

@@ -26,6 +26,7 @@ Prefer the project's existing commands. The following are CLI shapes only — ch
 <godot> --path <project> --script res://<in_engine_screenshot.gd>
 ```
 
+- **Proof over claims**: G3 evidence comes from the running game, not a clean import. For a short clip of the actual camera and character walking past the asset, Godot's movie writer is the usual tool (`<godot> --path <project> --write-movie <out.avi> --fixed-fps 30 --quit-after <frames> <scene>`; check the flags for the installed version). Attach stills or the clip to the G3 review.
 - Check the real exit code and error log (including import warnings). Passing headless physics does not mean the visuals pass; in-engine screenshots need real rendered output.
 - Run the target scene and use **the actual character controller's physical movement** to check front/back occlusion, walking around, door steps, grounding, and stuck recovery; a successful teleport is not "walkable".
 - Run the checks relevant to the asset's use and stop; repeat only for new changes, failures, or unresolved issues. Export only when the user wants a playable build or the project's delivery requires it, into a new output directory so you don't lock the user's running exe, and never kill the user's processes casually.
