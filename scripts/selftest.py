@@ -186,7 +186,7 @@ def test_artjob(d: Path) -> None:
     check("job: cannot accept without G3", r.returncode != 0)
     r = J("stage", "house_a", "needs_reconcile")
     check("job: side state requires a note", r.returncode != 0)
-    r = J("event", "house_a", "remote_task", "--data", '{"api_key":"sk-123"}')
+    r = J("event", "house_a", "remote_task", "--data", '{"cookie":"placeholder"}')
     check("job: refuses to write credentials", r.returncode != 0)
     r = J("event", "house_a", "remote_task", "--data", '{"task_id":"t-1"}')
     check("job: records remote task", r.returncode == 0)
