@@ -1,6 +1,7 @@
 ---
 name: game-art-workflow
 description: Use when a user requests 2D or 3D static game art — scene backgrounds, props, buildings, vegetation, tileable textures, modular kits, sprite cut-outs — or integrating such assets into Godot, Unity, or Unreal Engine, including tool/vendor selection, staged art review, batch production, and resuming or rolling back asset jobs across sessions. Applies to requests in any language, including Chinese. Not for character animation, rigging, UI, particle VFX, or standalone gameplay systems.
+license: CC-BY-NC-4.0 (using it in commercial games is allowed; selling the skill is not). See LICENSE.
 ---
 
 # Game Art Asset Workflow

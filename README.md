@@ -2,7 +2,7 @@
 
 **Turn your AI coding agent into a game art lead.** Ask for "village houses for my Godot scene" and get assets that were planned, reviewed by you, checked, and dropped into the real scene — without surprise spend or a trashed project.
 
-![skill](https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%7C%20Codex-6b5bd6) ![godot](https://img.shields.io/badge/Godot%204.x-verified-478cbf) ![ue](https://img.shields.io/badge/Unreal%20Engine%205-verified-313131) ![unity](https://img.shields.io/badge/Unity-guided-555) ![python](https://img.shields.io/badge/python-3.9%2B-3776ab) ![license](https://img.shields.io/badge/license-MIT-green)
+![skill](https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%7C%20Codex-6b5bd6) ![godot](https://img.shields.io/badge/Godot%204.x-verified-478cbf) ![ue](https://img.shields.io/badge/Unreal%20Engine%205-verified-313131) ![unity](https://img.shields.io/badge/Unity-guided-555) ![python](https://img.shields.io/badge/python-3.9%2B-3776ab) ![license](https://img.shields.io/badge/license-CC%20BY--NC%204.0-lightgrey)
 
 <p align="center"><img src="assets/hero.svg" alt="One request goes through G1 plan, G2 asset and G3 in-game review gates before shipping to Godot, Unity or UE5; behavior evals: 83% to 98% across 12 scenarios, 25% to 100% when told to run autonomously" width="100%"></p>
 
@@ -190,4 +190,10 @@ Failure cases from real projects are the most valuable input. Include the engine
 
 ## License
 
-MIT, see [LICENSE](LICENSE).
+[CC BY-NC 4.0](LICENSE), with one extra permission.
+
+- **Free to use in any project, commercial games included.** The assets, scenes, and code you make with it are yours, with no attribution needed.
+- **Credit required when you share or adapt the skill:** "game-art-workflow by Yongfei She, https://github.com/mnmnsyf/game-art-workflow, CC BY-NC 4.0".
+- **No selling the skill itself:** no paid listings, bundles, paywalls, or paid products that include it. For a commercial license, [open an issue](https://github.com/mnmnsyf/game-art-workflow/issues).
+
+Releases up to v1.0.0 were MIT and stay MIT.
