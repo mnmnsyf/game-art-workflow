@@ -31,6 +31,7 @@ First confirm the project root, engine version, and whether a job record already
 | Tool choice, missing image generation, cost & visibility | [Tools & vendors](references/tools.md) |
 | Review records, rework, resuming, replacement & rollback | [Review & state](references/review-state.md) |
 | 2D images, layering, cut-outs, transparency, tiling textures | [2D production](references/2d.md) |
+| Whole 3D scene: style directions, blockout by modules, prop sheets, assembly | [Scene workflow](references/scene-pipeline.md) |
 | Generated 3D model end to end: concept handoff, Tripo, Blender prep, review | [Model chain](references/model-pipeline.md) · [Tripo notes](references/tripo.md) · [Setup](references/setup.md) |
 | 3D references, models, materials, decimation, collision | [3D production](references/3d.md) |
 | Character identity, three-view sheets, model generation, rigging, retargeting, deformation and engine integration | [Character production](references/characters.md) |
