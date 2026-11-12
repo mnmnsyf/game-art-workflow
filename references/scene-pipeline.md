@@ -1,4 +1,4 @@
-# Scene Workflow: direction → blockout by modules → generated parts → assembly
+# Scene Workflow: direction → blockout by modules → generated parts → assembly → engine
 
 For a whole 3D scene or set piece (a launch site, a temple, a hangar), not a single prop. Adapted from a community Tripo + Blender scene workflow (2026) and fitted to this skill's gates. A single model inside the scene still goes through [the model chain](model-pipeline.md).
 
@@ -7,8 +7,9 @@ For a whole 3D scene or set piece (a launch site, a temple, a hangar), not a sin
 | S0 Direction | study how illustrators draw such scenes, imagine our own scene, render it in several styles with an image AI, pick a direction, derive the game views | user researches, imagines and picks; agent analyses references, lists views and objects, writes short edit lines, reviews | **G1** (style anchor + views) |
 | S1 Blockout | split the scene into modules; block each in Blender at real size with flat materials | agent | **G2** (blockout at game camera) |
 | S2 Parts | replace modules: hand-model or Tripo per module; props from a style-matched prop sheet | agent + user's image AI | **G2** per part / per batch |
-| S3 Assembly | import parts at blockout transforms; the human does the set dressing | agent places structure, user places dressing | **G3** |
-| S4 Life | VFX, lights, interactions | outside this skill (scope separately) | — |
+| S3 Assembly | put the parts together in Blender at the blockout transforms; render the game cameras | agent | **G2** (assembled scene) |
+| S4 Engine | export, import into the engine, place at the blockout transforms; the human does the set dressing | agent places structure, user places dressing | **G3** |
+| S5 Life | VFX, lights, interactions | outside this skill (scope separately) | — |
 
 ## S0 Direction
 
@@ -38,10 +39,47 @@ When the research turns up no reference close enough, fall back to text prompts 
 
 ## S3 Assembly
 
-- The agent imports approved parts and snaps structural modules to the blockout transforms (an engine bridge or editor Python). It may place repeated kit pieces along explicit rules.
+- In Blender, swap every blockout placeholder for its approved part (structural modules keep the blockout transforms; a placeholder made of several primitives is one prop instance). Render the game cameras and compare with S1. This is the cheap place to catch proportion problems between parts (e.g. a rocket taller than its service tower) before anything enters the engine.
+
+## S4 Engine
+
+- Export one file per unique asset with its transform reset, plus a placement list (asset, location, rotation, scale) and the game cameras; then import and snap structural modules to those transforms (an engine bridge or editor Python). Follow the project's existing content folders and naming before any generic convention. It may place repeated kit pieces along explicit rules.
 - **Set dressing is the human's**: props, clutter, composition and sight lines are placed by the user in the editor. Agents placing dressing by coordinates produce stiff, evenly scattered scenes; the agent's job is to make every approved prop available, correctly sized and pivoted, and to report what is placed.
 - **Stop at G3** with captures from the real game camera.
 
-## S4 Life
+## S5 Life
 
 Effects (smoke, steam, sparks), lighting passes and interactions make the scene; they are outside this art skill. List them as follow-ups with their dependencies.
+
+## Folder layout
+
+One folder per scene or reusable kit, one sub-folder per step; shared tools in one place. Job ledgers stay where the tools keep them.
+
+```
+art/
+├─ inbox/                      new, unreviewed images; move them out once reviewed (keep it empty)
+├─ ref/                        outside references (never published)
+├─ workflow/                   project-profile.json, style packs
+├─ tools/                      scripts shared by all scenes (blender/, engine/)
+└─ work/
+   ├─ <scene>/                 e.g. launchpad
+   │  ├─ S0_direction/         style anchor, view images, direction notes
+   │  ├─ S1_blockout/          blockout .blend, module list, review/
+   │  ├─ S2_parts/
+   │  │  ├─ concepts/          prop and part concept images
+   │  │  ├─ modules/           hand-built / kit parts (GLB + textures)
+   │  │  ├─ tripo.json         which model-chain jobs this scene uses: {"job": <.asset-workflow job dir>, "use": "refined/model.glb"}
+   │  │  └─ review/
+   │  ├─ S3_assembly/          assembled .blend, review/ game-camera renders
+   │  ├─ S4_<engine>/          e.g. S4_ue: export package (meshes, textures, placements + cameras), engine shots/, logs/
+   │  ├─ scripts/              scene-only scripts and run_*.sh, logs/
+   │  ├─ _archive/             superseded versions (move, don't delete)
+   │  └─ README.md             what each step produced and how to rerun it
+   └─ <kit>/                   a reusable set used by several scenes (e.g. a modular rocket): same steps, often without S1
+<project>/.asset-workflow/     model-chain job ledger (raw/final/refined per job); referenced from tripo.json, never copied
+```
+
+- Current outputs sit at the top of their step folder; gate images go in `review/`; replaced versions go to `_archive/`.
+- A scene that uses a kit references the kit's files (e.g. the kit's assembled `.blend`) instead of copying them.
+- Scripts take every path as an argument or environment variable and resolve shared helpers relative to `art/tools/`, so moving a scene folder doesn't break them. Images inside saved `.blend` files are absolute paths — remap them after moving files.
+- Engine content follows the project's existing folders (check where its current meshes, textures and levels live) even when a naming document says otherwise; ask only if the two disagree and nothing exists yet.

@@ -76,4 +76,4 @@ Import the approved GLB through the project's engine bridge (for Unreal see [unr
 
 - Job files live in `<project>/.asset-workflow/<asset>/<job>/` (add it to `.gitignore`). Large raw models stay out of version control.
 - Record gate decisions with `artjob.py review` against the approved file's hash, and credits with `artjob.py spend`. `model_job.py status --job <job>` shows the machine state; `approved_for_game` stays false until G3.
-- Only the approved, prepared model (and its `.blend` if the project keeps sources) is copied into the project's art folder.
+- Only the approved, prepared model (and its `.blend` if the project keeps sources) is copied into the project's art folder. Inside a scene workflow, list it in the scene's `S2_parts/tripo.json` (job folder + file to use) instead of copying it ([folder layout](scene-pipeline.md#folder-layout)).
