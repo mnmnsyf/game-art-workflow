@@ -38,6 +38,15 @@ Field notes for image-to-3D with Tripo. Researched 2026-10-31 from community cas
 
 `model_job.py` wraps the official CLI pinned to a verified version (see [Setup](setup.md)). It calls node directly (no shell interpretation of prompts), disables update checks and analytics, redacts an environment key from anything it saves, uses a dry run to read the estimate, and submits exactly one candidate. `doctor` checks login without spending.
 
+## Field notes: Smart Mesh batch (2026-11)
+
+- **Smart Mesh P2.0** (Studio, "clean topology") returns a quad mesh near the requested polycount (10k quads ≈ 20k tris) with **no UVs and no texture**. Either add Tripo **Texture** (20 credits; auto-UV + texture baked from the concept image) or unwrap in Blender and bake a generic weathered material (see the project's `uv_metal_bake.py` / `stage_build.py`). Smart Mesh costs 100 credits per generation after the free trials; Studio resets "Number of Generation" (to 4) and Privacy (to Sharing Only) when the workspace reloads — set 1 and Private every session.
+- **Browser choice.** The desktop app's built-in browser cannot upload files (no file tool; the native picker is outside the page). Use Claude in Chrome (`file_upload` on the hidden image input) or computer use. Chrome needs: Tripo logged in, the site allowed for automatic downloads, and "Ask where to save each file" off — otherwise each export waits behind a Save-As dialog (the data still lands as a complete `.tmp` in Downloads).
+- **One-page loop that held for 16 models:** remove the input image (trash icon) → upload the next image → Generate → wait ~60 s → Texture → wait ~70 s → Export (format GLB is remembered) → move the newest `.glb` out of Downloads under the asset name. The export file name defaults to Tripo's own caption, so rename by order, not by name.
+- Tripo Texture follows the concept image well for painted/rusty props; open containers can come back without a roof — check the clay row. A roof plate added in Blender (ray-cast the inner walls, recess under the top rail, colour from the median wall texel, own baked material) closed it without a regeneration.
+- Island checks: the textured GLB is split along UV seams, so weld by position before counting parts (thousands of "islands" otherwise). Across 16 Smart Mesh models almost every small island was a bolt or bracket sitting on the body; only one model had real floating faces (22). Don't budget a big cleanup step for Smart Mesh output.
+- Recolouring by texture (e.g. a red signal lens): a hue mask on the base colour PNG, dilated 2 px, is enough; save the new image to a file before exporting so the GLB embeds the edit.
+
 ## Studio (web credits)
 
 Studio credits and API balance are different wallets. A browser agent operates the real page; Python only records state and attaches the browser's own download. No private endpoints, cookies, tokens or hidden URLs.
