@@ -1,10 +1,10 @@
-# Production helpers: GPT-first, no local models
+# Production helpers: no local models
 
-2026-11-01. Adopts useful production patterns from [Godogen asset-gen](https://github.com/htdt/godogen/tree/master/asset-gen) and [godogen_assets](https://github.com/htdt/godogen_assets): examine exported geometry both textured and clay, review alpha composites, and verify actual runtime behavior. Helpers here are independently implemented; no upstream script or model weights are copied. GPT remains the image-generation default. These helpers are local processing/rendering, not generative backends.
+2026-11-01. Adopts useful production patterns from [Godogen asset-gen](https://github.com/htdt/godogen/tree/master/asset-gen) and [godogen_assets](https://github.com/htdt/godogen_assets): examine exported geometry both textured and clay, review alpha composites, and verify actual runtime behavior. Helpers here are independently implemented; no upstream script or model weights are copied. These helpers are local processing/rendering, not generative backends.
 
 ## Alpha processing
 
-Use the built-in GPT image tool's real alpha when supported. Preserve existing native alpha; do not strip it or turn it back into a colored background. Creative corrections go through the available image-edit tool according to its instructions. Deterministic processing can use the following helper when appropriate:
+Use an image tool's real alpha when it provides one. Preserve existing native alpha; do not strip it or turn it back into a colored background. Creative corrections go through the available image-edit tool according to its instructions. Deterministic processing can use the following helper when appropriate:
 
 ```text
 python <skill>/scripts/matte_image.py <input.png> --out <scratch>/new-version.png
@@ -28,10 +28,10 @@ Run only in a fresh background Blender process, never an unsaved interactive ses
 
 ```text
 <blender> --background --python-exit-code 1 --python <skill>/scripts/render_asset.py -- <model.glb> --out <scratch>/model-review --resolution 384 --samples 8
-python <skill>/scripts/contact_sheet.py <scratch>/model-review/*.png --out <review>/model-sheet.png --cols 6
+python <skill>/scripts/contact_sheet.py <scratch>/model-review/*.png --out <review>/model-sheet.png --cols 7
 ```
 
-The renderer imports a self-contained GLB, never exports a modified mesh, and verifies the source hash after rendering. External image/buffer dependencies are rejected. It renders front/right/back/left/top/bottom as textured and clay (12 images). A neutral orthographic studio keeps counterpart cameras equal. Imported cameras/lights cannot contaminate it. A blank result, unsupported extension, missing texture, or shader issue still needs investigation; successful file output is not an art PASS.
+The renderer imports a self-contained GLB, never exports a modified mesh, and verifies the source hash after rendering. External image/buffer dependencies are rejected. It renders front three-quarter/front/right/back/left/top/bottom as textured and clay (14 images); `model_job.py process` runs it automatically and builds the contact sheet. A neutral orthographic studio keeps counterpart cameras equal. Imported cameras/lights cannot contaminate it. A blank result, unsupported extension, missing texture, or shader issue still needs investigation; successful file output is not an art PASS.
 
 `stats.json` records source hash, source-unit bounds, actual triangle counts, UV layers, material slots and image dimensions. Boundary/non-manifold counts use a disposable statistically welded BMesh copy, without welding the imported source. They are findings, not watertightness guarantees or automatic rejection rules. No scale normalization, retopology, unwrap or rebake occurs.
 

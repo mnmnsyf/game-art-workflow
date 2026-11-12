@@ -16,6 +16,10 @@ This skill is workflow orchestration and integration guidance with deterministic
 | Animated Unreal character integration | Workflow documented; real UE sample still pending | [Character production](characters.md) |
 | `scripts/` (except the Blender scripts) | Local self-test passes (below) | `python scripts/selftest.py` |
 | `scripts/blender_views.py` | Written against the Blender 3.6+ API, not yet run in CI or by the maintainer | — |
+| `scripts/model_job.py` state machine, credit cap, Studio branch, tool discovery | Unit tests pass with the Tripo CLI mocked (no network, no spend) | `python scripts/test_model_job.py` |
+| `model_job.py process` → `blender_prepare.py` + `render_asset.py` | Real run on Blender 5.3.0 (Windows): synthetic GLB sized by longest axis, 14 views, review sheet | `ART_TEST_BLENDER=<blender> python scripts/test_model_job.py` |
+| Tripo API submit / resume through `tripo-cli@0.8.1` | Ran in a real project before it moved into this skill; not yet re-run from `model_job.py` | [Tripo notes](tripo.md) |
+| External concept handoff + rubric review | Documented; first real asset pending | [Model chain](model-pipeline.md) |
 
 Only a route that actually ran successfully may be promoted in a project profile to "verified for this version and project".
 

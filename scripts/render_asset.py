@@ -1,4 +1,4 @@
-"""Blender-only non-destructive GLB review: six textured and six clay views.
+"""Blender-only non-destructive GLB review: seven textured and seven clay views (incl. a front three-quarter).
 
 blender --background --python-exit-code 1 --python render_asset.py -- model.glb --out TEMP_DIR
 Only imports and renders. Never exports, saves over a model, or modifies its UV/materials.
@@ -101,7 +101,8 @@ def main():
     clay = bpy.data.materials.new('ReviewClay');clay.use_nodes = True
     clay.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (.40,.40,.40,1)
     clay.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = .85
-    angles = [('front',(0,-1,.35)),('right',(1,0,.35)),('back',(0,1,.35)),('left',(-1,0,.35)),
+    # front34 matches the three-quarter angle most concept images use, for concept-vs-model review.
+    angles = [('front34',(.75,-1,.45)),('front',(0,-1,.35)),('right',(1,0,.35)),('back',(0,1,.35)),('left',(-1,0,.35)),
               ('top',(0,-.001,1)),('bottom',(0,-.001,-1))]
     for mode in ('textured','clay'):
         scene.view_layers[0].material_override = clay if mode == 'clay' else None

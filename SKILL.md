@@ -8,7 +8,9 @@ license: CC-BY-NC-4.0 (using it in commercial games is allowed; selling the skil
 
 Turn a one-line request into game art assets that **match the project's style, pass staged review, can be rolled back, and hold up in the actual game camera**. This skill orchestrates and gatekeeps: generation, modeling, and import are done by whatever tools actually exist in the current environment, and `scripts/` provides deterministic ledger and check tools.
 
-**Image-generation default:** prefer GPT image generation/editing, especially the built-in image tool when available. Do not install local generation or segmentation models for this workflow. If GPT is unavailable, show the real alternatives and wait for the user's channel choice; do not silently switch providers or spend on another API. Existing project/user choices still take precedence.
+**Image generation:** if this session has a working image tool, it may be used. Otherwise — the usual case for coding agents — the agent writes a prompt pack, **the user generates in the image AI of their choice**, and the agent reviews the results with a scored rubric. Do not install local generation or segmentation models, and do not silently switch providers or spend on another API. Existing project/user choices take precedence.
+
+**Generated 3D models** (props, rocks, machine parts, simple buildings) follow [the model chain](references/model-pipeline.md): concept handoff → Tripo → headless Blender prep → 14-view review sheet → engine. The agent drives Tripo and Blender itself through `scripts/model_job.py`; run its `doctor` first on a new machine ([Setup](references/setup.md)).
 
 **Four hard rules**
 1. **Reviews do not substitute for each other**: concept approval ≠ model / cut-out approval ≠ in-game approval; a technical PASS ≠ art approval; silence ≠ approval.
@@ -29,9 +31,10 @@ First confirm the project root, engine version, and whether a job record already
 | Tool choice, missing image generation, cost & visibility | [Tools & vendors](references/tools.md) |
 | Review records, rework, resuming, replacement & rollback | [Review & state](references/review-state.md) |
 | 2D images, layering, cut-outs, transparency, tiling textures | [2D production](references/2d.md) |
+| Generated 3D model end to end: concept handoff, Tripo, Blender prep, review | [Model chain](references/model-pipeline.md) · [Tripo notes](references/tripo.md) · [Setup](references/setup.md) |
 | 3D references, models, materials, decimation, collision | [3D production](references/3d.md) |
 | Character identity, three-view sheets, model generation, rigging, retargeting, deformation and engine integration | [Character production](references/characters.md) |
-| GPT alpha handling, non-destructive model diagnostics, runtime evidence | [Production helpers](references/production-tools.md) |
+| Alpha handling, non-destructive model diagnostics, runtime evidence | [Production helpers](references/production-tools.md) |
 | Engine integration | [Godot](references/godot.md) / [Unreal Engine](references/unreal.md) |
 | Full worked examples | [3D village → Godot](examples/village-houses-godot.md) / [2D tiling & cut-outs](examples/tileset-and-props-2d.md) |
 | Maintaining this skill, verification limits & evidence | [Validation & evidence](references/validation.md) |
@@ -76,8 +79,10 @@ Host scripts use Python 3.9+; image scripts need Pillow. `render_asset.py` runs 
 | `scripts/chroma_key.py` | Remove a solid generation background with soft alpha and despill (never prompt for "transparent") |
 | `scripts/matte_image.py` | Preserve native alpha, apply an explicit mask, or remove border-connected solid BG; optional known-BG decontamination; always outputs QA composites |
 | `scripts/grid_slice.py` | Slice a sheet / prop pack into equally scaled, anchor-aligned PNGs; flags objects cut off at cell edges |
-| `scripts/blender_views.py` | Run inside Blender: render front/back/left/right/top/bottom/¾ views of a model plus size and triangle stats |
-| `scripts/render_asset.py` | Blender: six textured + six clay GLB views and mesh/UV/texture diagnostics, without changing the source model |
+| `scripts/model_job.py` | One generated model per job: `doctor / init / plan / submit / resume / process / status`, Studio `studio-*`, `import-local`; single-submit credit cap, reconcile instead of resubmit, raw kept |
+| `scripts/blender_prepare.py` | Blender (called by `process`): faithful A1 prep — real size by height or longest axis, ground origin, baked transforms; keeps parts/UV/materials |
+| `scripts/render_asset.py` | Blender: seven textured + seven clay GLB views (incl. front three-quarter) and mesh/UV/texture diagnostics, without changing the source model |
+| `scripts/blender_views.py` | Run inside Blender: quick front/back/left/right/top/bottom/¾ views plus size and triangle stats (prefer `render_asset.py` for gate reviews) |
 
 ## Key distinctions
 

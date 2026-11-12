@@ -4,7 +4,8 @@ Choose vendors by capability, not brand habit. Mark every channel with one of fo
 
 ## Probe order
 
-1. GPT image generation / editing built into this session and related skills (e.g. imagegen): prefer this route and follow its save and alpha requirements. A tool's name alone does not prove which model it uses; record only what is actually exposed.
+1. Image generation / editing actually callable in this session (a built-in image tool or an image skill): usable, following its save and alpha requirements. A tool's name alone does not prove which model it uses; record only what is actually exposed. When there is none, the default is the external generation pack below ([concept prompt pack](../templates/concept-prompt-pack.md)) — not a new API.
+   For 3D, run `python <skill>/scripts/model_job.py --root <project> doctor` (Blender, tripo-cli, login; no spend).
 2. Wrappers already verified in the project (scripts or CLIs registered in the profile's `tools.wrappers`).
 3. Existing API configuration: check only **whether** environment variables or config entries exist — never print keys, search the user's secrets, or read browser cookies.
 4. Installed CLIs, DCC tools (e.g. Blender background Python), usable GPT web generation, and other explicitly chosen routes. Do not install local generative or segmentation models. A local service is only an alternative if the user explicitly chooses one already available.
@@ -17,7 +18,7 @@ Show the user the options that **actually exist**: existing API, local service, 
 
 - Without a browser, deliver an "external generation pack": prompt, size, role of each reference image, alpha / tiling requirements, avoid list, export format, and the file name to send back; then record `waiting_external`.
 - Never silently switch to a paid API; never pass programmatic color blocks off as generated concept art. When a procedural route fits better, recommend it openly in G1.
-- Prefer the built-in GPT tool over building an API wrapper. API use requires a selected channel, configured credentials and applicable spend authorization; do not add Godogen's Gemini/Grok defaults or local Qwen/TRELLIS backends just to fill the tool list.
+- Prefer an available built-in image tool, or the user's own image AI via the generation pack, over building an API wrapper. API use requires a selected channel, configured credentials and applicable spend authorization; do not add Godogen's Gemini/Grok defaults or local Qwen/TRELLIS backends just to fill the tool list.
 
 ## Capabilities and limits
 

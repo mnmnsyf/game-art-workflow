@@ -111,7 +111,7 @@ class RenderTests(unittest.TestCase):
             report = json.loads((output/'stats.json').read_text())
             self.assertEqual(report['triangles'],12)
             self.assertEqual(report['boundary_edges_after_statistical_weld'],0)
-            self.assertEqual(len(report['views']),12)
+            self.assertEqual(len(report['views']),14)
             self.assertEqual(report['source_sha256'],hashlib.sha256(before).hexdigest())
             self.assertTrue(all((output/v).is_file() for v in report['views']))
             self.assertEqual(source.read_bytes(),before)
