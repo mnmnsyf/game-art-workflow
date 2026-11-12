@@ -13,8 +13,10 @@ There is real project evidence for Godot 4.x (see the [case study](../examples/c
 
 - For static assets prefer the project's verified GLB / glTF import route; check meters, Y-up orientation, origin, normals, sRGB base color, and the metallic-roughness channels (glTF: G = roughness, B = metallic).
 - Don't apply a generic shader that truncates material features. For buildings that fade when occluding, duplicate the complete native material (StandardMaterial3D or the project shader) and change only the necessary transparency / distance-fade parameters, keeping normals, metallic-roughness, AO, UVs, and channels. Technical acceptance compares the **actual active material** against the source material.
+- `material_override` takes precedence over surface overrides. Updating a surface can appear to succeed while the original whole-mesh override remains active; inspect the active material and update the correct layer. If alpha-hash fading creates visible stippling, evaluate smooth alpha with an independent opaque shadow proxy, checking sorting and cost instead of sacrificing PBR channels.
 - Configure collision separately by use (StaticBody3D + simple shapes / convex decomposition / trimesh) and verify collision layer / mask, character capsule size, wall thickness, doorways, step height, and slope limit. Fading the display never removes collision.
 - Replace only the designated resource references. When saving a PackedScene, don't recursively reset the owner of nodes inside nested imported scenes; keep sub-scene ownership, or explicitly create your own display node reusing the Mesh resource and free the temporary import tree, to avoid duplicate nodes and RID leaks.
+- When authoring MultiMesh via rendering-server instance updates, verify the serialized transform/custom-data buffer after reload. A dummy/headless backend can save a count without useful instance buffers; use a real renderer or a proven CPU-safe serialization route. A successful headless physics check cannot prove foliage renders.
 
 ## Verification
 
@@ -30,6 +32,9 @@ Prefer the project's existing commands. The following are CLI shapes only — ch
 - Check the real exit code and error log (including import warnings). Passing headless physics does not mean the visuals pass; in-engine screenshots need real rendered output.
 - Run the target scene and use **the actual character controller's physical movement** to check front/back occlusion, walking around, door steps, grounding, and stuck recovery; a successful teleport is not "walkable".
 - Run the checks relevant to the asset's use and stop; repeat only for new changes, failures, or unresolved issues. Export only when the user wants a playable build or the project's delivery requires it, into a new output directory so you don't lock the user's running exe, and never kill the user's processes casually.
+- Measure framing using the sprite's actual nontransparent bounds, not its full canvas. Check roof/chimney headroom and actor readability together. Distinguish the normal player camera from a separate art-review camera, and inspect the exported executable as well as the source project when renderer/import settings change.
 - If a project forbids a mode of operation (e.g. computer use), keep that restriction and use the CLI, in-engine screenshots, and automated input instead; it is a project-profile preference, not a rule for other projects.
 
 Backfill the first successful version, renderer, commands, and results into the profile's `engine.verified`.
+
+For a concrete authored-architecture/GPT-foliage/Forward+ example with separate technical and art acceptance, see [Stylized cottage lookdev](../examples/stylized-cottage-lookdev.md).

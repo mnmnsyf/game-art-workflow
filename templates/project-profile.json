@@ -56,6 +56,10 @@
     "memory_mb": null
   },
   "tools": {
+    "preferences": {
+      "image_generation": "GPT; built-in tool preferred when available",
+      "install_local_models": false
+    },
     "channels": [],
     "wrappers": [],
     "authorization": {

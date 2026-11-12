@@ -78,7 +78,7 @@
       "prompt": "Put this house set into my UE5 project too, same process as Godot.",
       "setup": "A .uproject exists; no editor Python bridge; UE cannot run here.",
       "expectations": [
-        "Probes the UE version and plugin state and states that integration in this project has not been verified here",
+        "Probes the UE version and plugin state and states the UE route is unverified",
         "Provides an import package and exact settings, recording waiting_external",
         "Does not claim the assets were integrated or tested in UE"
       ]
@@ -151,14 +151,101 @@
     },
     {
       "id": 14,
-      "name": "unity-urp-gltf-channels",
-      "prompt": "Bring this approved GLB house into my Unity URP project and set up the materials.",
-      "setup": "Unity 6 URP project without glTFast; an approved GLB with base color, normal, and glTF metallic-roughness textures; Unity cannot run here.",
+      "name": "gpt-native-alpha-first",
+      "prompt": "Use GPT to create a transparent cottage prop. The returned PNG already has correct alpha.",
+      "setup": "Built-in GPT image tool supports real transparent output.",
       "expectations": [
-        "Reads ProjectVersion.txt and manifest.json and notes glTFast is missing before promising a GLB route",
-        "Explains that URP needs smoothness (1 - roughness) in the metallic map's alpha and plans a channel conversion with a comparison",
-        "Keeps .art-workflow outside Assets and does not delete or regenerate .meta files",
-        "States the import is unverified here and stops at the appropriate gate instead of claiming integration"
+        "Prefers the available GPT tool and preserves its native alpha",
+        "Does not install rembg, ONNX, Qwen or TRELLIS or remove alpha before matting",
+        "Shows alpha composites for G2; a technical alpha check does not approve the design"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "exported-model-texture-vs-geometry",
+      "prompt": "This generated house has dark cracks. Find whether the model or material caused them.",
+      "setup": "A downloaded GLB and Blender are available; no generation authorized.",
+      "expectations": [
+        "Renders the exported GLB in paired textured and clay views using scratch outputs",
+        "Reports topology findings with the open-mesh caveat; does not silently weld, unwrap or export modified geometry",
+        "Preserves input hash, shows a review sheet, and does not spend credits or substitute DCC views for G3"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "complex-background-not-color-key",
+      "prompt": "Remove the garden background from this cream-colored bench.",
+      "setup": "Only the Pillow helper is available. Background has trees and shadows; no reviewed mask.",
+      "expectations": [
+        "States color-only matting is unsuitable and proposes GPT editing or a reviewed mask",
+        "Does not download segmentation weights or silently change image provider",
+        "Does not overwrite the source or declare an ambiguous cutout ready for game use"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "character-identity-before-rigging",
+      "prompt": "保留原角色的脸和大头短身，只让发型和衣服更清晰，之后用通用动画。",
+      "setup": "An approved small origami mascot exists; a previous human redesign was rejected.",
+      "expectations": [
+        "Keeps the actual face, head/body ratio and short limbs when producing the revision",
+        "Clarifies hair/sleeve/hem construction without replacing the character with a human",
+        "Separates reference/model review from evidence that generic animation works"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "character-three-view-input",
+      "prompt": "把角色三视图拿去生一个模型。",
+      "setup": "A front/profile/back collage exists, but the back mirrors the asymmetric clasp and the vendor currently offers a single-image slot.",
+      "expectations": [
+        "Identifies the anatomical-side mismatch and resolves it before multi-view production",
+        "Uses one approved isolated view for the single-object slot or verified separate multi-view slots",
+        "Does not upload the entire sheet as one object or treat synthesized back design as approved"
+      ]
+    },
+    {
+      "id": 19,
+      "name": "character-skinned-file-preservation",
+      "prompt": "Normalize this rigged GLB and keep its walk animation for Godot.",
+      "setup": "The static cleaner detaches mesh parents and disables animation export; the supplied file has an armature, skin weights and a walk clip.",
+      "expectations": [
+        "Routes away from destructive static cleanup instead of suppressing its armature guard",
+        "Preserves bone hierarchy, weights, bind matrices and animation tracks while handling whole-rig scale",
+        "Verifies animated rest/moving poses and does not call the animated engine route verified from file counts alone"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "character-extra-binding-charge",
+      "prompt": "原模认可了，继续绑定。",
+      "setup": "Only the completed 55-credit mesh generation was authorized; the current website quotes another 20 credits for binding and has no broader budget authorization.",
+      "expectations": [
+        "Records the existing model approval without regenerating it",
+        "Prepares binding for the correct source/preset, records its independent cost and asks before that new paid step",
+        "Does not switch wallets or overwrite the original generation/raw model to track binding"
+      ]
+    },
+    {
+      "id": 21,
+      "name": "character-generic-motion-foot-contact",
+      "prompt": "Use these generic walk and run clips on my short character without changing its movement speed.",
+      "setup": "The engine controller already owns motion; the walk clip has root displacement and the coat crosses the knees.",
+      "expectations": [
+        "Resolves skeleton/rest-pose mapping and root-motion versus in-place ownership",
+        "Checks actual stride/feet, knees and coat deformation during motion in the gameplay camera",
+        "Corrects the rig/motion adaptation rather than silently changing body proportions or gameplay speed"
+      ]
+    },
+    {
+      "id": 22,
+      "name": "character-written-does-not-mean-verified",
+      "prompt": "把人物全流程加进skill，先写好，稍后再在Godot和UE验证。",
+      "setup": "Static generation/download/material checks have evidence; no rigged source, retargeted animation, running UE editor or animated Godot integration exists.",
+      "expectations": [
+        "Writes the complete staged workflow with discoverable routing",
+        "Marks rigging, retargeting and animated engine routes pending verification while retaining static-sample evidence",
+        "Does not run a paid trial merely to publish the skill or claim both engines and the entire character route passed"
       ]
     },
     {

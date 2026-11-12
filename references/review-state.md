@@ -15,7 +15,7 @@ Use the project's own reliable record format when it has one; otherwise use `scr
 
 **Keep temporary files out of the project.** Single-view renders, test bakes, bake passes already packed into another map, superseded versions, DCC backups (`.blend1` etc.), engine/tool logs and report JSONs go to the session scratchpad or the system temp directory from the start, never under the project or `.art-workflow/`. Record their findings in `events.jsonl` instead of keeping the files. What stays on disk is only: sources (DCC files, build scripts), import sources, final runtime assets, the review images shown at gates, and the ledger. Before close-out, delete any intermediate the job itself created in the project that no artifact or review references.
 
-Keep the cache out of version control and engine scanning: for Godot put `.gdignore` in `.art-workflow/` (`artjob.py init` creates it), for Unity keep it at the project root outside `Assets/`, for UE keep it outside Content. Copy final assets into the versioned asset directory; keep the location and hash of large raw files without forcing them into Git.
+Keep the cache out of version control and engine scanning: for Godot put `.gdignore` in `.art-workflow/` (`artjob.py init` creates it), for UE keep it outside Content. Copy final assets into the versioned asset directory; keep the location and hash of large raw files without forcing them into Git.
 
 When reusing an existing project wrapper, keep its spend / submission state and only add the missing review and integration information — never maintain two independent submission states.
 

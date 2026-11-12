@@ -9,7 +9,6 @@
   {"query": "After importing this GLB into Godot the metallic is gone and it doesn't match the original model", "should_trigger": true},
   {"query": "Make a set of low-poly trees and rocks for my Godot forest level", "should_trigger": true},
   {"query": "I need tileable stone floor textures with normal maps for Unreal", "should_trigger": true},
-  {"query": "my imported house prefab in Unity URP looks way too shiny compared to the original GLB, fix the materials", "should_trigger": true},
   {"query": "Make a run and jump skeletal animation set for my main character", "should_trigger": false},
   {"query": "Design the main menu UI and health bar for my game", "should_trigger": false},
   {"query": "Make a fire explosion particle effect", "should_trigger": false},

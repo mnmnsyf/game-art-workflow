@@ -1,6 +1,6 @@
-# Unreal Engine Integration
+# Unreal Engine Integration: Pending First Project Test
 
-The maintainer has verified this workflow in a real UE5 project. That does not make it a general auto-importer or guarantee every engine version, plugin set, or project layout: still probe each project, and backfill the actual version, tools, and results into its profile on first use. Never auto-install the engine / plugins or modify an arbitrary existing UE project just to install this skill.
+This file is an operating procedure to verify before execution, not a general UE auto-importer that has already run end to end. No UE project, import script, or runtime test is claimed as passing. On first use in UE, backfill the actual version, tools, and results into the project profile; never auto-install the engine / plugins or modify an arbitrary existing UE project just to install this skill.
 
 ## Probe first
 
@@ -21,4 +21,4 @@ With enough capability, prefer official editor Python or the project's existing 
 
 Verify import, materials, units, collision, and real level display on a representative asset first, then test traversal, door steps, sorting, and occlusion with the actual character in PIE / Standalone. Capture screenshots from the target camera; editor thumbnails or DCC turntables are not game acceptance. Choose performance checks by platform and asset impact; don't package the whole project without reason. Each review gate still stops for the user's reply.
 
-Record each item as executable / needs setup / limited / unverified. Only a route that actually ran successfully is promoted to "verified for this version and project"; keep logs, sources, import settings, and game screenshots. Fold corrections from real UE projects into this adapter, keep project-specific parameters in the profile, and don't pollute the Godot branch.
+Record each item as executable / needs setup / limited / unverified. Only a route that actually ran successfully is promoted to "verified for this version and project"; keep logs, sources, import settings, and game screenshots. Fold first-UE-project corrections into this adapter, keep project-specific parameters in the profile, and don't pollute the Godot branch.

@@ -4,10 +4,10 @@ Choose vendors by capability, not brand habit. Mark every channel with one of fo
 
 ## Probe order
 
-1. Image generation / editing built into this session and related skills (e.g. imagegen): prefer them when they fit, and follow their save requirements.
+1. GPT image generation / editing built into this session and related skills (e.g. imagegen): prefer this route and follow its save and alpha requirements. A tool's name alone does not prove which model it uses; record only what is actually exposed.
 2. Wrappers already verified in the project (scripts or CLIs registered in the profile's `tools.wrappers`).
 3. Existing API configuration: check only **whether** environment variables or config entries exist — never print keys, search the user's secrets, or read browser cookies.
-4. Local services (explicit address), installed CLIs, DCC tools (e.g. Blender background Python), usable web pages.
+4. Installed CLIs, DCC tools (e.g. Blender background Python), usable GPT web generation, and other explicitly chosen routes. Do not install local generative or segmentation models. A local service is only an alternative if the user explicitly chooses one already available.
 
 Write the probe results to the profile's `tools.channels` and reuse them next time; ask again only when conditions change (errors, insufficient balance, the user changes their mind).
 
@@ -17,6 +17,7 @@ Show the user the options that **actually exist**: existing API, local service, 
 
 - Without a browser, deliver an "external generation pack": prompt, size, role of each reference image, alpha / tiling requirements, avoid list, export format, and the file name to send back; then record `waiting_external`.
 - Never silently switch to a paid API; never pass programmatic color blocks off as generated concept art. When a procedural route fits better, recommend it openly in G1.
+- Prefer the built-in GPT tool over building an API wrapper. API use requires a selected channel, configured credentials and applicable spend authorization; do not add Godogen's Gemini/Grok defaults or local Qwen/TRELLIS backends just to fill the tool list.
 
 ## Capabilities and limits
 

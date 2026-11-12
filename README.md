@@ -1,38 +1,12 @@
 # game-art-workflow
 
-**Turn your AI coding agent into a game art lead.** Ask for "village houses for my Godot scene" and get assets that were planned, reviewed by you, checked, and dropped into the real scene — without surprise spend or a trashed project.
+**Make an AI agent deliver game assets like a seasoned art lead: staged reviews, no wasted credits, no broken projects — and assets that actually hold up in the game.**
 
 ![skill](https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%7C%20Codex-6b5bd6) ![godot](https://img.shields.io/badge/Godot%204.x-verified-478cbf) ![ue](https://img.shields.io/badge/Unreal%20Engine%205-verified-313131) ![unity](https://img.shields.io/badge/Unity-guided-555) ![python](https://img.shields.io/badge/python-3.9%2B-3776ab) ![license](https://img.shields.io/badge/license-CC%20BY--NC%204.0-lightgrey)
 
-<p align="center"><img src="assets/hero.svg" alt="One request goes through G1 plan, G2 asset and G3 in-game review gates before shipping to Godot, Unity or UE5; behavior evals: 83% to 98% across 12 scenarios, 25% to 100% when told to run autonomously" width="100%"></p>
+Image generation/editing defaults to GPT, preferably the built-in tool. No local generation or segmentation models are installed. Non-destructive Blender diagnostics and model-free alpha processing are described in [Production helpers](references/production-tools.md).
 
-**What you get, in three lines**
-
-- 🧭 **You stay in control** — the agent plans, produces, and integrates, but stops at three review gates (plan → asset → in-game) and waits for you, even in autonomous mode.
-- 💸 **No wasted credits** — it uses only tools it actually finds, stays within the budget you set, and never pays twice after a dropped connection.
-- 🎮 **Assets that work in the game** — real alpha, seamless tiling, correct PBR channels, collision, sorting, and a screenshot from your actual camera.
-
-## Try it in 1 minute
-
-**1. Install** (Claude Code; re-run to update)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/mnmnsyf/game-art-workflow/main/install.sh | sh
-```
-
-```powershell
-irm https://raw.githubusercontent.com/mnmnsyf/game-art-workflow/main/install.ps1 | iex
-```
-
-**2. Open any game project** — or the bundled demo, [`demo/godot-village`](demo/godot-village) — in Claude Code.
-
-**3. Ask in plain words:**
-
-> Make a cozy village house for this scene and replace the placeholder.
-
-The agent reads your project, writes a one-page plan, and stops for your OK. Reply "go" (or change anything) and it continues to the next gate.
-
-Using claude.ai instead? Download `game-art-workflow.skill` from [Releases](https://github.com/mnmnsyf/game-art-workflow/releases) and upload it under Settings → Capabilities → Skills.
+![skill](https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%7C%20Codex-6b5bd6) ![engines](https://img.shields.io/badge/Godot%204.x-verified-478cbf) ![ue](https://img.shields.io/badge/Unreal-guided-555) ![python](https://img.shields.io/badge/python-3.9%2B-3776ab) ![license](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
@@ -73,17 +47,17 @@ Every gate waits for the user's reply.
 
 - **Assets**: scene backgrounds, layered parallax, props, buildings, vegetation, tiling textures, modular kits, sprite cut-outs
 - **Routes**: image generation, image-to-3D (Tripo / Meshy, etc.), Blender procedural, hybrid, user-generated then imported
-- **Engines**: Godot 4.x and Unreal Engine 5 (both verified in real projects), Unity (guided workflow for Built-in / URP / HDRP, pending a project test)
+- **Engines**: Godot 4.x (tested in a real project), Unreal Engine (guided workflow, pending a project test)
 - **Not included**: character animation and rigging, UI, particle VFX, gameplay systems
 
 See [references/validation.md](references/validation.md) for maturity. Only routes that actually ran are marked "verified".
 
-## Install options
+## Install
 
-**Claude Code** — the one-liners above, or manually:
+**Claude Code**
 
 ```bash
-git clone https://github.com/mnmnsyf/game-art-workflow ~/.claude/skills/game-art-workflow
+git clone https://github.com/<you>/game-art-workflow ~/.claude/skills/game-art-workflow
 ```
 
 For a project-level install, put it in `<project>/.claude/skills/game-art-workflow`.
@@ -132,11 +106,17 @@ python scripts/contact_sheet.py batch/*.png --anchor style/anchor1.png --out rev
 # Generated on a solid background? Key it out with soft edges and no colour fringe
 python scripts/chroma_key.py raw/barrel.png -o work/barrel.png
 
+# Preserve native alpha or process a verified solid background / explicit mask
+python scripts/matte_image.py input.png --mask reviewed-mask.png --out /tmp/masked-v2.png
+
 # Prop pack / sprite sheet: slice into equally scaled, feet-aligned PNGs; flags cut-off objects
 python scripts/grid_slice.py work/props.png --grid 3x3 -o work/props/ --names "rock,crate,lamp,..."
 
 # 3D model review: render 7 views + real size and triangle count (run inside Blender)
 blender -b -P scripts/blender_views.py -- raw/house_a.glb --out review/house_a_views
+
+# Fresh background Blender process: 6 textured + 6 clay views and mesh/UV/texture diagnostics, original unchanged
+blender --background --python-exit-code 1 --python scripts/render_asset.py -- model.glb --out /tmp/model-review
 ```
 
 Self-test and structure check:
@@ -149,21 +129,21 @@ python scripts/selftest.py
 python scripts/check_skill.py
 ```
 
+`python scripts/test_production.py` checks the production helper locally. Set `ART_TEST_BLENDER` to the Blender executable to include the actual renderer test; otherwise that case is explicitly skipped. No test submits a generation task.
+
 ## Layout
 
 ```text
 SKILL.md                 entry: hard rules, workflow, three gates, read-on-demand table
 references/              branch details (loaded on demand to save context)
   intake.md  style.md  generation.md  provenance.md  tools.md  review-state.md
-  2d.md  3d.md  godot.md  unity.md  unreal.md  validation.md
-examples/                full walkthroughs: 3D village → Godot, 2D tiling & cut-outs, field case study
+  2d.md  3d.md  characters.md  production-tools.md  godot.md  unity.md  unreal.md  validation.md
+examples/                full walkthroughs: 3D village → Godot, 2D tiling & cut-outs, field case study, cottage lookdev
 templates/               project profile, asset manifest, brief, G1 plan, review card
 scripts/                 artjob / tile_preview / alpha_check / compare_images / contact_sheet /
-                         chroma_key / grid_slice / blender_views
+                         chroma_key / matte_image / grid_slice / blender_views / render_asset
 demo/godot-village/      minimal Godot project to try the skill in a minute
 evals/                   behavior and trigger eval cases
-assets/                  README images
-install.sh / install.ps1 one-line installers
 ```
 
 ## Design principles
@@ -178,9 +158,7 @@ install.sh / install.ps1 one-line installers
 ## Roadmap
 
 - [ ] Full three-gate test of the 2D flow
-- [x] Unreal Engine 5 verified in a real project
-- [ ] First Unity project test (URP and HDRP)
-- [ ] Demo GIF of a full three-gate run
+- [ ] First Unreal Engine 5 project test and backfill
 - [ ] Modular kit grid / seam check script
 - [ ] glTF material channel and UV fidelity comparison script
 
