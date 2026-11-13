@@ -18,12 +18,17 @@ Turn a one-line request into game art assets that **match the project's style, p
 3. **Never fake capability**: do not promise tools you have not detected; label unverified routes "unverified"; programmatic color blocks are not concept art; a PNG is not a PSD.
 4. **No unauthorized spend, no damage to the workspace**: new spend stays within the authorized count / budget; when a remote result is unclear, reconcile before resubmitting; originals are always kept; replace only the designated references; never reset / clean the user's work.
 
+## Guiding the person
+
+The person using this skill should not need to read it. If they are new to it, ask how to start, seem unsure what to do next, or are unfamiliar with the tools, follow [Guided mode](references/guide.md): open with a plain-language outline of the steps and what only they can do, run the setup checks for them, end every stage with what was done, what to look at, at most three questions and what happens next, and answer "where are we" with a status card read from the ledger.
+
 ## Read on demand
 
 First confirm the project root, engine version, and whether a job record already exists; read only the branch the current step needs.
 
 | Current work | Read |
 | --- | --- |
+| Someone new to the workflow, "how do I start", "where are we", picking up a later session | [Guided mode](references/guide.md) |
 | New project, new request, whole scene, batch planning | [Project profile & plan](references/intake.md) |
 | Style lock, batch consistency, reference management | [Style consistency](references/style.md) |
 | Writing prompts, backgrounds / transparency, sheets & kits, sizes | [Prompting & raw generation](references/generation.md) |
@@ -83,6 +88,12 @@ Host scripts use Python 3.9+; image scripts need Pillow. `render_asset.py` runs 
 | `scripts/model_job.py` | One generated model per job: `doctor / init / plan / submit / resume / process / status`, Studio `studio-*`, `import-local`; single-submit credit cap, reconcile instead of resubmit, raw kept |
 | `scripts/blender_prepare.py` | Blender (called by `process`): faithful A1 prep — real size by height or longest axis, ground origin, baked transforms; keeps parts/UV/materials |
 | `scripts/render_asset.py` | Blender: seven textured + seven clay GLB views (incl. front three-quarter) and mesh/UV/texture diagnostics, without changing the source model |
+| `scripts/blender_bake.py` | Blender module for hand-built scene parts: procedural weathered materials, per-channel bake into one atlas, bevel + weighted normals, UV unwrap, GLB export |
+| `scripts/blender_export_engine.py` | Blender: package an assembled scene for an engine — one FBX per unique asset, `_D` / `_ORM` textures (capped, default 2K), `package.json` with placements and game cameras; `--map` names kits and skips placeholders |
+| `scripts/ue/ue_import_package.py` | Unreal commandlet: import a package (meshes, textures, one master material + instances, Nanite off) into the folders set by `ART_UE_CONTENT` |
+| `scripts/ue/ue_build_levels.py` | Unreal GUI: build a content-only level and a review level (lighting, ground, game cameras), capture the cameras |
+| `scripts/ue/ue_attach_sublevel.py` | Unreal commandlet: stream a content level into the main level (not loaded until game code loads it) |
+| `scripts/ue/ue_move_assets.py` · `ue_resave_levels.py` | Unreal commandlet: move assets with reference fix-up, re-save levels, delete unreferenced redirectors |
 | `scripts/blender_views.py` | Run inside Blender: quick front/back/left/right/top/bottom/¾ views plus size and triangle stats (prefer `render_asset.py` for gate reviews) |
 
 ## Key distinctions

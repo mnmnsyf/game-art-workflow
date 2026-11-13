@@ -23,6 +23,8 @@ Order matters: **illustration research → imagine our own scene → AI renders 
 6. **Agent review per image**: does it serve its game camera (e.g. in a front control view the player must read the rocket's tilt; leave room for HUD), is it the same site as the anchor, can the structures be split into modules, leftover text / real-product look-alikes / unwanted elements. Archive and rename by view (`<scene>_view<N>_<name>_<nn>`). **Stop at G1** with the anchor and the view set.
 7. **Rights note.** An anchor converted from someone else's artwork stays close to that artwork. Fine for internal direction; the 3D scene rebuilt in S1–S3 is original work, but the concept images themselves should not be published as the game's art (store page, jam submission, marketing).
 
+**Outputs** (in `S0_direction/`): the style anchor, one image per game camera (`views/`), a short direction note (what the scene is, which camera serves what, which reference each choice came from), the edit lines that worked, and the draft list of structures and props that becomes the S1 module list.
+
 When the research turns up no reference close enough, fall back to text prompts ([concept prompt pack](../templates/concept-prompt-pack.md)): short, only wanted things, one change per round.
 
 ## S1 Blockout by modules
@@ -36,6 +38,24 @@ When the research turns up no reference close enough, fall back to text prompts 
 - **Large and exact structures** (towers, stairs, walls, modular pieces): usually hand-modelled or kit-built in Blender from the blockout dimensions; Tripo only when the form is organic or ornamental. When using Tripo for a structural module, prefer a clean-topology / smart-mesh model family and say why on the card ([Tripo notes](tripo.md)).
 - **Props**: make a **prop sheet** in the scene's style — one image AI generation of a grid of compact props (3×3 / 4×4), following the sheet rules in [generation.md](generation.md) (one class per sheet, margins, same view and scale). Slice with `grid_slice.py`, review the pack, then each approved prop becomes its own [model chain](model-pipeline.md) job with its real size. Props that are wide, tall or collision-bearing get their own image.
 - Every part is reviewed against the scene anchor; batches are reviewed on a contact sheet with `--anchor`.
+- A prop that is large, tall or seen up close gets its **own** image rather than a sheet cell; a sheet cell is too small for the model generator to read the back and the openings.
+
+### Hand-built structures
+
+Build them as **scripts** (helpers: `scripts/blender_bake.py`), not by hand in the UI, so a proportion change found in S3 (a tower shorter than the rocket beside it) is one parameter and a re-run.
+
+1. Start from the blockout geometry of the module (it already has the right size and place); join its primitives into one mesh per module.
+2. **Small bevel + weighted normals** on hard edges (e.g. 1–3 cm, 2 segments, edges above ~30°, then smooth-by-angle and face-area weighted normals). Edges catch light instead of reading as razor-sharp CG.
+3. **Unwrap** (smart project is enough for baked atlases) and **bake a procedural weathered material** per channel (base colour, roughness, metallic) into one atlas: concrete, bare steel, paint over steel. Typical layers: object-space noise for colour variation, AO for cavity and crevice rust, an edge mask for chipped paint, a soot gradient near engines and trenches.
+4. Swap in a plain PBR material that reads the baked maps and export the module (GLB), keeping its world placement or a recorded transform.
+
+Two traps that make every surface bake as bare silver metal:
+- **Edge masks from `Pointiness`** depend on vertex density; on low-poly boxes every vertex is a corner, so whole faces count as edge. Use a shader bevel (Bevel node normal · true normal) instead.
+- **Saving bakes with the render pipeline** (`save_render`) applies the view transform and washes colours out. Save the image buffer itself (raw values); keep colour textures sRGB and data textures non-colour.
+
+### Model-generator props
+
+Run each prop through the [model chain](model-pipeline.md): process to its real size and review the 14-view sheet, then a refine pass in Blender for what the review found (missing roof, a forbidden red light baked into the texture, floating fragments) — see [Tripo notes](tripo.md). Record which job and which file the scene uses (`S2_parts/tripo.json`) instead of copying files around.
 
 ## S3 Assembly
 
@@ -43,9 +63,11 @@ When the research turns up no reference close enough, fall back to text prompts 
 
 ## S4 Engine
 
-- Export one file per unique asset with its transform reset, plus a placement list (asset, location, rotation, scale) and the game cameras; then import and snap structural modules to those transforms (an engine bridge or editor Python). Follow the project's existing content folders and naming before any generic convention. It may place repeated kit pieces along explicit rules.
+- Export one file per unique asset with its transform reset, plus a placement list (asset, location, rotation, scale) and the game cameras (`scripts/blender_export_engine.py`); then import and snap structural modules to those transforms (an engine bridge or editor Python). Follow the project's existing content folders and naming before any generic convention. It may place repeated kit pieces along explicit rules.
 - **Set dressing is the human's**: props, clutter, composition and sight lines are placed by the user in the editor. Agents placing dressing by coordinates produce stiff, evenly scattered scenes; the agent's job is to make every approved prop available, correctly sized and pivoted, and to report what is placed.
 - **Stop at G3** with captures from the real game camera.
+- Engine-specific route, settings and traps: [Unreal](unreal.md), [Godot](godot.md), [Unity](unity.md). Cap texture size at export (e.g. 2K for generator textures that arrive at 4K) rather than in the engine, so the source assets stay small.
+- When the scene enters a project other people are working in: follow the repository's own content-folder and naming rules, check for teammates' unpublished work on the same levels or folders before moving assets, simulate merges before making them, and build and run the project's tests before publishing.
 
 ## S5 Life
 
@@ -83,3 +105,16 @@ art/
 - A scene that uses a kit references the kit's files (e.g. the kit's assembled `.blend`) instead of copying them.
 - Scripts take every path as an argument or environment variable and resolve shared helpers relative to `art/tools/`, so moving a scene folder doesn't break them. Images inside saved `.blend` files are absolute paths — remap them after moving files.
 - Engine content follows the project's existing folders (check where its current meshes, textures and levels live) even when a naming document says otherwise; ask only if the two disagree and nothing exists yet.
+
+## Pitfalls seen in production
+
+| Symptom | Cause and fix |
+| --- | --- |
+| Baked textures look washed-out silver | Pointiness edge mask on low-poly geometry, or bakes saved through the view transform — see [hand-built structures](#hand-built-structures) |
+| Every engine material renders grey | The master material failed to compile (e.g. a texture parameter with no default) — check the master first, not the instances |
+| A long image-AI chat slows down and stops saving | Start a new chat every few images; download only the full-resolution result, not the preview |
+| A browser can't upload to the generator | Use a browser tool that can set file inputs; the native file picker is outside the page |
+| Downloads stall behind save dialogs | Allow automatic downloads for the site and turn off "ask where to save" before a batch |
+| Renders or files appear in an unexpected root folder | A script used relative paths; resolve every path to absolute |
+| Textures go missing in a `.blend` after reorganising folders | Saved images keep absolute paths; remap them after moving files |
+| A rebuilt level is empty and its actors landed in another map | Recreating a level another level references can fail silently; open and empty it instead, and check which world is current |

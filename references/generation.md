@@ -50,3 +50,12 @@ Batching several objects in one image is cheaper and keeps style consistent, but
 - Derive variants from one approved hero asset by editing it, prompting only what changes.
 - When outputs drift, go back to the approved seed and make a constrained edit; never keep editing a drifted derivative until it becomes the accidental reference.
 - Local generators (open image / mesh models on the user's GPU) are free but slow and one job at a time; run them sequentially. Paid APIs need confirmation before the first call (see [tools.md](tools.md)).
+
+## Driving an image AI through a browser
+
+When the user's image tool is a web app the agent operates in their browser (signed in by the user):
+
+- One image per request, short instructions; the reference image is attached once per chat.
+- Long chats get slow and may stop saving; start a new chat every ~5 images and re-attach the reference.
+- The page often shows a reduced preview and thought images next to the result; download only the final full-resolution image and check its pixel size before using it.
+- Name each download by asset and version (`<scene>_obj_<name>_01`), then move it out of the inbox once reviewed.

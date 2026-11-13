@@ -27,6 +27,17 @@ Getting an AI to produce one pretty image is easy; turning it into a usable game
 | A new session re-asks every parameter | `artjob.py resume` recovers from files, hashes, and the event log |
 | Endless screenshots and full-project test reruns "just to be sure" | Targeted checks by use; stop once they pass |
 
+## Getting started (for the person, not the agent)
+
+You don't need to read this skill. Install it, open your game project with the agent, and say what you want in your own words, e.g. "make a launch pad scene for my rocket game" or "I want a set of village houses in Godot". The agent will:
+
+1. explain the steps in plain language and ask at most five questions (what, where it appears, which engine, which image AI you use, budget);
+2. check your machine and tell you exactly what to install or sign in to;
+3. work through the steps, showing pictures and stopping for your OK after each one;
+4. answer "where are we?" at any time with a short status card.
+
+What only you do: sign in to accounts, approve spending, choose at each review, and arrange the final set dressing in the editor.
+
 ## Workflow
 
 ```mermaid
