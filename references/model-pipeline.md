@@ -76,6 +76,13 @@ rust weeping from each fastener. A `for` loop emits an even cage, and the concep
 character lives in that irregular layer, say so instead of iterating at it, and take one of the other routes:
 generate that piece, or start from an existing model.
 
+**Build up, do not author a whole part.** Real hardware is a main structure with many small discrete pieces
+added onto it, and it reads that way: the bracket, the valve, the sensor and the cable clamp each sit on the
+structure as their own object, at their own angle, overlapping their neighbours. A part authored as one big
+object instead comes out looking moulded. So model the main structure first, then add small pieces one at a
+time onto it, checking the silhouette as they go. Keep them as separate objects while working - joining is a
+late step, and anything that has to move stays separate for good.
+
 **Prefer adapting an existing model over scripting an organic form.** A permissively licensed model (NASA 3D
 Resources, Sketchfab CC-BY, Poly Haven, the user's own library) that is already close is usually cheaper and
 better than any number of scripted passes, and `import-local` carries no spend. Record the source and licence
