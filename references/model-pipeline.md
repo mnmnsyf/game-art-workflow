@@ -49,6 +49,39 @@ python <skill>/scripts/model_job.py --root <project> resume  --job <job>        
 - Studio route: follow [Tripo notes → Studio](tripo.md#studio-web-credits) (`studio-preflight` → `studio-begin` → one click → `studio-record` → export → `studio-attach`).
 - An existing GLB (bought, made by hand, or downloaded earlier): `import-local --file <glb>`, no spend.
 
+## M2b Hand-built parts (scripted in a DCC)
+
+Some parts cannot be generated: exact circles, even divisions, lathed and arrayed hardware, anything that has
+to match a kit's anchors. Those get built by script. Build them **in stages, like an artist**, and lock each
+stage before starting the next:
+
+| Stage | What exists | Locked by |
+| --- | --- | --- |
+| **B0 Breakdown** | A list of pieces and which of them move against each other | The anchor/animation plan |
+| **B1 Blockout** | Grey clay, no material: volumes and proportions only | Side-by-side against the concept — this is a taste call, so it goes to the user |
+| **B2 Major forms** | The shapes that make the silhouette | Silhouette reads as the concept's from three angles |
+| **B3 Secondary** | Ribs, belts, frames, openings | |
+| **B4 Tertiary** | Bolts, clamps, cables, small fittings | Triangle budget |
+| **B5 Material** | Paint, metal, weathering | |
+
+**Render every stage from the concept image's own camera and put the two side by side.** A three-quarter
+concept and a default turntable disagree about everything, so "the body is a drum, not a box" can survive
+several rounds of detailing unnoticed; each of those rounds is rework. Match the azimuth, elevation, lens and
+portrait/landscape framing, then compose with `compare_images.py`. Judge B1 as grey clay with no textures:
+material hides proportion errors.
+
+Scripting is good at what is regular and parametric — lathes, arrays, grids, frames, evenly spaced fasteners.
+It is bad at what is irregular and hand-made — dented plating, hand-cut panel breaks, cable runs that wander,
+rust weeping from each fastener. A `for` loop emits an even cage, and the concept rarely has one. When a part's
+character lives in that irregular layer, say so instead of iterating at it, and take one of the other routes:
+generate that piece, or start from an existing model.
+
+**Prefer adapting an existing model over scripting an organic form.** A permissively licensed model (NASA 3D
+Resources, Sketchfab CC-BY, Poly Haven, the user's own library) that is already close is usually cheaper and
+better than any number of scripted passes, and `import-local` carries no spend. Record the source and licence
+in the manifest and in provenance before touching it; check the licence allows modification and the intended
+distribution. Then retopologise, rescale to the manifest's in-game size, and adjust toward the concept.
+
 ## M3 Prepare and render (G2b)
 
 ```text
